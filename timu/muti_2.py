@@ -1,5 +1,5 @@
+# -- coding: utf-8 --
 
-# -*- coding: utf-8 -*-
 """
 Created on Fri Jan 12 10:28:27 2018
 函数模型之多输入与多输出模型
@@ -37,8 +37,8 @@ add_x=add_x.values
 '''
 main_input = Input(shape=(len(main_x[0]),), dtype='float32', name='main_input')
 x = Embedding(output_dim=512, input_dim=len(main_x), input_length=len(main_x[0]))(main_input)
-lstm_out = Bidirectional(LSTM(128,return_sequences=True),merge_mode='concat')(x)
-lstm_out = Bidirectional(LSTM(128,return_sequences=False),merge_mode='concat')(lstm_out)
+lstm_out = Bidirectional(LSTM(128,return_sequences=False),merge_mode='concat')(x)
+# lstm_out = Bidirectional(LSTM(128,return_sequences=False),merge_mode='concat')(lstm_out)
 
 
 #额外的输入数据
@@ -49,8 +49,8 @@ auxiliary_input = Input(shape=(len(add_x[0]),), name='aux_input')
 
 auxiliary_input_x=Embedding(output_dim=512, input_dim=len(add_x), input_length=len(add_x[0]))(auxiliary_input)
 
-lstm_out_aux = Bidirectional(LSTM(128,return_sequences=True),merge_mode='concat')(auxiliary_input_x)
-lstm_out_aux = Bidirectional(LSTM(128,return_sequences=False),merge_mode='concat')(lstm_out_aux)
+lstm_out_aux = Bidirectional(LSTM(128,return_sequences=False),merge_mode='concat')(auxiliary_input_x)
+# lstm_out_aux = Bidirectional(LSTM(128,return_sequences=False),merge_mode='concat')(lstm_out_aux)
 
 
 '''
@@ -75,7 +75,7 @@ model = Model(inputs=[main_input, auxiliary_input], outputs=[main_output])
 adam=Adam(lr=1e-3)
 model.compile(optimizer=adam, loss='binary_crossentropy',loss_weights=[1],metrics=['accuracy'])
 #训练模型l
-model.fit([main_x, add_x], [main_y],validation_split=0.33,epochs=5, batch_size=32,verbose=1)
+model.fit([main_x, add_x], [main_y],validation_split=0.33,epochs=50, batch_size=32,verbose=1)
 
 n_in_timestep=1
 model.save('./model/my_model_combine_timestep_LSTM%s_1000days_0429.h5' % n_in_timestep)
