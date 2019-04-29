@@ -69,4 +69,4 @@ model.fit([main_x, add_x], [main_y, main_y],epochs=10, batch_size=128)
 #model.compile(optimizer='rmsprop',loss={'main_output': 'binary_crossentropy', 'aux_output': 'binary_crossentropy'},loss_weights={'main_output': 1., 'aux_output': 0.2})
 
 # And trained it via:
-#model.fit({'main_input': headline_data, 'aux_input': additional_data},{'main_output': labels, 'aux_output': labels},epochs=50, batch_size=32)
+#model.fit({'main_input': headline_data, 'aux_ input': additional_data},{'main_output': labels, 'aux_output': labels},epochs=50, batch_size=32)
