@@ -14,11 +14,11 @@ import pandas as pd
 from keras.optimizers import Adam
 
 
-main_x=pd.read_csv('train_para.csv',header = 0)
+main_x=pd.read_csv('train_para.csv',header = None)
 main_x=main_x.values
 # main_x=np.array(main_x)
 # main_x = np.random.random((10000,100))
-main_y=pd.read_csv('train_label.csv',header = 0)
+main_y=pd.read_csv('train_label.csv',header = None)
 main_y=main_y.values
 # main_y = keras.utils.to_categorical(np.random.randint(1,size = (10000,1)))
 
@@ -28,7 +28,7 @@ main_y=main_y.values
 All input arrays (x) should have the same number of samples. Got array shapes:
 主数据集和额外的数据集的输入的特征张量的数据集个数相等，也就是行数相等；
 '''
-add_x=pd.read_csv('train_ques.csv',header = 0)
+add_x=pd.read_csv('train_ques.csv',header = None)
 add_x=add_x.values
 # add_x=np.array(add_x)
 # add_x = np.random.random((10000,100))
@@ -103,9 +103,9 @@ main_x_3=np.concatenate((main_x,cc),axis=1)
 # model.fit([main_x, auxiliary_input], [main_y],validation_split=0.33,epochs=5, batch_size=32,verbose=1)
 model.fit([main_x_1, main_x_2,main_x_3], [main_y],validation_split=0.33,epochs=5, batch_size=32,verbose=1)
 #yuce
-test_p=pd.read_csv('test_para.csv',header = 0)
+test_p=pd.read_csv('test_para.csv',header = None)
 test_p=test_p.values
-test_q=pd.read_csv('test_ques.csv',header = 0)
+test_q=pd.read_csv('test_ques.csv',header = None)
 test_q=test_q.values
 
 a=test_q[:,0:1]
@@ -133,7 +133,7 @@ classed = [np.round(x) for x in classes]
 
 # print(classes)
 data1 = pd.DataFrame(classed)
-data1.to_csv('test_pred_nohead.csv',header=0, index=0)
+data1.to_csv('test_pred.csv',header=0, index=0)
 
 
 # n_in_timestep=1
