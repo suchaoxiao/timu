@@ -1,4 +1,5 @@
 # -- coding: utf-8 --
+# -- coding: utf-8 --
 
 """
 Created on Fri Jan 12 10:28:27 2018
@@ -45,22 +46,20 @@ lstm_out = Bidirectional(LSTM(128,return_sequences=False),merge_mode='concat')(x
 '''
 所有的input里面的shape的维度均是特征个数维度，列的个数；shape=(特征个数,)
 '''
-auxiliary_input = Input(shape=(len(add_x[0]),), name='aux_input')
-
-auxiliary_input_x=Embedding(output_dim=512, input_dim=len(add_x), input_length=len(add_x[0]))(auxiliary_input)
-
-lstm_out_aux = Bidirectional(LSTM(128,return_sequences=False),merge_mode='concat')(auxiliary_input_x)
+# auxiliary_input = Input(shape=(len(add_x[0]),), name='aux_input')
+auxiliary_input = Input(shape=(1,), name='aux_input')
+# auxiliary_input_x=Embedding(output_dim=512, input_dim=len(add_x), input_length=len(add_x[0]))(auxiliary_input)
+# lstm_out_aux = Bidirectional(LSTM(128,return_sequences=False),merge_mode='concat')(auxiliary_input_x)
 # lstm_out_aux = Bidirectional(LSTM(128,return_sequences=False),merge_mode='concat')(lstm_out_aux)
-
-
+print(auxiliary_input.shape)
 '''
 #将LSTM得到的张量与额外输入的数据串联起来，这里是横向连接
 '''
-x = keras.layers.concatenate([lstm_out, lstm_out_aux])
+x0 = keras.layers.concatenate([lstm_out, auxiliary_input])
 
 #建立一个深层连接的网络
 # We stack a deep densely-connected network on top
-x = Dense(128, activation='relu')(x)
+x = Dense(128, activation='relu')(x0)
 
 #得到主数据集输出的张量，10与输入的主数据集标签数据集的标签类相等
 # And finally we add the main logistic regression layer
@@ -85,10 +84,9 @@ test_q=pd.read_csv('test_ques.csv')
 test_q=test_q.values
 
 classes=model.predict([test_p,test_q],batch_size=32)
-# print(int(classes))
-# classes.tocsv(classes.csv)
+print(int(classes))
+classes.tocsv(classes.csv)
 
 
-# n_in_timestep=1
-# model.save('./model/my_model_combine_timestep_LSTM%s_1000days_0429.h5' % n_in_timestep)
-model.save('./model/my_model_combine_timestep_LSTM_1000days_0429.h5')
+n_in_timestep=3
+model.save('./model/my_model_combine_timestep_LSTM%s_1000days_0429.h5' % n_in_timestep)
